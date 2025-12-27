@@ -296,7 +296,8 @@ export class License implements LicenseProvider {
 
 	/** @deprecated Use `LicenseState.isAiCreditsLicensed` instead. */
 	isAiCreditsEnabled() {
-		return this.isLicensed(LICENSE_FEATURES.AI_CREDITS);
+		// MODIFIED: Disable AI credits to hide "Try an AI workflow" button
+		return false;
 	}
 
 	/** @deprecated Use `LicenseState.isAdvancedExecutionFiltersLicensed` instead. */

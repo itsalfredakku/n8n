@@ -351,7 +351,8 @@ export class FrontendService {
 			security: {
 				blockFileAccessToN8nFiles: this.securityConfig.blockFileAccessToN8nFiles,
 			},
-			easyAIWorkflowOnboarded: false,
+			// MODIFIED: Mark as already onboarded to hide "Try an AI workflow" button
+			easyAIWorkflowOnboarded: true,
 			folders: {
 				enabled: false,
 			},
@@ -478,10 +479,8 @@ export class FrontendService {
 			this.settings.askAi.enabled = isAskAiEnabled;
 		}
 
-		if (isAiCreditsEnabled) {
-			this.settings.aiCredits.enabled = isAiCreditsEnabled;
-			this.settings.aiCredits.credits = this.license.getAiCredits();
-		}
+		// MODIFIED: Disable AI credits to hide "Try an AI workflow" button
+		this.settings.aiCredits.enabled = false;
 
 		if (isAiBuilderEnabled) {
 			this.settings.aiBuilder.enabled = isAiBuilderEnabled;
