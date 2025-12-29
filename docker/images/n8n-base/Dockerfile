@@ -5,15 +5,11 @@ ARG NODE_VERSION=22.21.1
 # ==============================================================================
 FROM node:${NODE_VERSION}-alpine AS builder
 
-# Install fonts
-RUN \
-  apk --no-cache add --virtual .build-deps-fonts msttcorefonts-installer fontconfig && \
-  update-ms-fonts && \
-  fc-cache -f && \
-  apk del .build-deps-fonts && \
-  find /usr/share/fonts/truetype/msttcorefonts/ -type l -exec unlink {} \;
+# Skip MS fonts installation (SourceForge mirrors are unreliable)
+# Install fontconfig only for any system fonts
+RUN apk --no-cache add fontconfig && fc-cache -f
 
-# Install essential OS dependencies
+# Install essential OS dependencies including build tools for native modules
 RUN echo "https://dl-cdn.alpinelinux.org/alpine/v3.22/main" >> /etc/apk/repositories && \
     echo "https://dl-cdn.alpinelinux.org/alpine/v3.22/community" >> /etc/apk/repositories && \
     apk update && \
@@ -28,7 +24,10 @@ RUN echo "https://dl-cdn.alpinelinux.org/alpine/v3.22/main" >> /etc/apk/reposito
         tzdata \
         ca-certificates \
         libc6-compat \
-        jq
+        jq \
+        python3 \
+        make \
+        g++
 
 # Install full-icu
 RUN npm install -g full-icu@1.5.0
